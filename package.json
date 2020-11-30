@@ -1,0 +1,19 @@
+{
+  "name": "hpa-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbo/hpa-template.git"
+  },
+  "author": "Thomas Bonk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tbo/hpa-template/issues"
+  },
+  "homepage": "https://github.com/tbo/hpa-template#readme"
+}

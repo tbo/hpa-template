@@ -18,7 +18,7 @@ module.exports = {
   entry,
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'src/assets/components'),
+    path: path.resolve(__dirname, 'build/'),
   },
   module: {
     rules: [

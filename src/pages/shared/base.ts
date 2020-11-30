@@ -1,6 +1,9 @@
 import { html, Child } from '../../utilities/template';
 import Header from './header';
 import Footer from './footer';
+import { addAsset } from '../../utilities/router';
+
+const clientUrl = addAsset('../../../build/client.js');
 
 const Base = (props: { title: string }, ...children: Child[]) => html`
   <!DOCTYPE html>
@@ -17,7 +20,7 @@ const Base = (props: { title: string }, ...children: Child[]) => html`
         ${children}
       </main>
       ${Footer()}
-      <script src="/assets/components/client.js"></script>
+      <script src="${clientUrl}"></script>
     </body>
   </html>
 `;

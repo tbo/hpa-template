@@ -21,17 +21,20 @@
   },
   "homepage": "https://github.com/tbo/hpa-template#readme",
   "dependencies": {
+    "callsite": "^1.0.0",
     "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
     "fastify": "^3.8.0",
     "fastify-cookie": "^4.1.0",
     "fastify-error-page": "^4.0.0",
     "fastify-multipart": "^3.3.1",
+    "fastify-static": "^3.3.0",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
+    "@types/fastify-static": "^2.2.1",
     "@types/node": "^14.14.10",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",

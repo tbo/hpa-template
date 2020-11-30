@@ -1,14 +1,25 @@
-import fastify, { RouteOptions, RouteHandlerMethod } from 'fastify';
+import fastify, { RouteHandlerMethod, RouteOptions } from 'fastify';
 import cookie from 'fastify-cookie';
-import multipart from 'fastify-multipart';
 import fastifyErrorPage from 'fastify-error-page';
-import { Template, renderToString } from './template';
+import multipart from 'fastify-multipart';
+import fastifyStatic from 'fastify-static';
+import path from 'path';
 import { asyncLocalStorage } from './context';
+import { renderToString, Template } from './template';
+import callsite from 'callsite';
+import { createHash } from 'crypto';
+import { readFileSync } from 'fs';
 
 const app = fastify({ logger: true });
 
-app.register(fastifyErrorPage).register(cookie).register(multipart, { addToBody: true }).listen(3000);
-
+app
+  .register(fastifyErrorPage)
+  .register(cookie)
+  .register(multipart, { addToBody: true })
+  .register(fastifyStatic, {
+    root: path.join(__dirname, '../../public'),
+  })
+  .listen(3000);
 interface PageOptions extends Omit<RouteOptions, 'method' | 'handler'> {
   method?: RouteOptions['method'];
   handler: () => Template | Promise<Template>;
@@ -33,6 +44,24 @@ export const addPage = (options: PageOptions) => {
 interface EndpointOptions extends Omit<RouteOptions, 'method'> {
   method?: RouteOptions['method'];
 }
+
+export const addAsset = function (filename: string) {
+  const originFolder = path.dirname(callsite()[1].getFileName());
+  const root = process.cwd();
+  const absoluteFilepath = path.join(originFolder, filename);
+  const relativeFilepath = path.relative(root, absoluteFilepath);
+  const fileData = readFileSync(absoluteFilepath, 'utf8');
+  const hash = createHash('sha1').update(fileData, 'utf8').digest('hex');
+  const url = `/assets/${hash}/${path.basename(filename)}`;
+  app.route({
+    method: 'GET',
+    url,
+    handler: (_request, reply) => {
+      reply.sendFile(relativeFilepath, root);
+    },
+  });
+  return url;
+};
 
 export const addEndpoint = (options: EndpointOptions) => {
   app.route({ method: 'GET', ...options });

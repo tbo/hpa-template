@@ -29,5 +29,4 @@ module.exports = {
       },
     ],
   },
-  watch: !isProduction,
 };

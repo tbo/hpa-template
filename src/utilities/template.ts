@@ -1,3 +1,5 @@
+import { addAsset } from './router';
+
 const repeatedWhitespace = /\s{2,}/g;
 const whitespace = /\r\n|\n|\r|(\s{1,}(?=<))/g;
 
@@ -49,6 +51,11 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
       result.webComponents.push(...subst.webComponents);
     } else if (Array.isArray(subst)) {
       result.push(...subst.flatMap(htmlEscape));
+      subst.forEach(item => {
+        if (item instanceof Template) {
+          result.webComponents.push(...item.webComponents);
+        }
+      });
     } else {
       result.push(htmlEscape(subst));
     }
@@ -57,7 +64,7 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
   return result;
 };
 
-const getWebComponentScript = (name: string) => `<script src="/assets/components/${name}.js"></script>`;
+const getWebComponentScript = (name: string) => `<script src="${addAsset(`../../build/${name}.js`)}"></script>`;
 
 const resolve = async (component: Template | Promise<Template>, webComponents: string[]) => {
   const list = await component;

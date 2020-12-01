@@ -20,6 +20,7 @@ app
     root: path.join(__dirname, '../../public'),
   })
   .listen(3000);
+
 interface PageOptions extends Omit<RouteOptions, 'method' | 'handler'> {
   method?: RouteOptions['method'];
   handler: () => Template | Promise<Template>;
@@ -45,25 +46,41 @@ interface EndpointOptions extends Omit<RouteOptions, 'method'> {
   method?: RouteOptions['method'];
 }
 
-export const addAsset = function (filename: string) {
-  const originFolder = path.dirname(callsite()[1].getFileName());
-  const root = process.cwd();
-  const absoluteFilepath = path.join(originFolder, filename);
-  const relativeFilepath = path.relative(root, absoluteFilepath);
-  const fileData = readFileSync(absoluteFilepath, 'utf8');
-  const hash = createHash('sha1').update(fileData, 'utf8').digest('hex');
-  const url = `/assets/${hash}/${path.basename(filename)}`;
-  app.route({
-    method: 'GET',
-    url,
-    handler: (_request, reply) => {
-      reply.sendFile(relativeFilepath, root);
-    },
-  });
-  return url;
-};
-
 export const addEndpoint = (options: EndpointOptions) => {
   app.route({ method: 'GET', ...options });
   return getLink(options.url);
+};
+
+const filenameToUrl = {};
+const urlToFile = {};
+
+app.route({
+  method: 'GET',
+  url: '/assets/*',
+  handler: (request, reply) => {
+    const path = urlToFile[request.params['*']];
+    if (path) {
+      reply.sendFile(path, '/');
+    } else {
+      reply.status(404).send();
+    }
+  },
+});
+
+export const addAsset = (filename: string) => {
+  if (filenameToUrl[filename]) {
+    return filenameToUrl[filename];
+  }
+  const originFolder = path.dirname(callsite()[1].getFileName());
+  const absoluteFilepath = path.join(originFolder, filename);
+  const fileData = readFileSync(absoluteFilepath, 'utf8');
+  const hash = createHash('sha1').update(fileData, 'utf8').digest('hex');
+  const assetPath = `${hash}/${path.basename(filename)}`;
+  const url = `/assets/${assetPath}`;
+  urlToFile[assetPath] = absoluteFilepath;
+  filenameToUrl[filename] = url;
+  if (path.extname(filename) === '.js') {
+    urlToFile[assetPath + '.map'] = absoluteFilepath + '.map';
+  }
+  return url;
 };

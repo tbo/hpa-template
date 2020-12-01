@@ -1,7 +1,7 @@
 const path = require('path');
 const { readdirSync } = require('fs');
 
-const WEB_COMPONENTS = 'build';
+const WEB_COMPONENTS = 'src/web-components/';
 const entry = Object.fromEntries(
   readdirSync(WEB_COMPONENTS).map(filename => [
     filename.split('.')[0],

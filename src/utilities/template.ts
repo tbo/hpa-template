@@ -33,7 +33,7 @@ class UnsafeHtml extends String {}
 
 export const unsafeHtml = (value: string) => new UnsafeHtml(value);
 
-const WEB_COMPONENT_PATTERN = /<([a-zA-Z]+-[a-zA-Z]+)/g;
+const WEB_COMPONENT_PATTERN = /(?:<| is=")([a-zA-Z]+-[a-zA-Z-]+)/g;
 
 export const html = (literalSections: TemplateStringsArray, ...substs: TemplateElement[]) => {
   let [raw, webComponents] = cache.get(literalSections) || [];

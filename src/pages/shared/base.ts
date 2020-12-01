@@ -15,7 +15,7 @@ const Base = (props: { title: string }, ...children: Child[]) => html`
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="${stylesUrl}" rel="stylesheet" />
     </head>
-    <body>
+    <body is="hpa-store">
       ${Header()}
       <main>
         ${children}

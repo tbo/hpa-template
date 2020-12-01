@@ -7,7 +7,7 @@ const HomePage = () =>
     { title: 'Homepage' },
     html`<div>
       <h1>Hello World</h1>
-      <clock-panel />
+      <hpa-clock />
     </div>`,
   );
 

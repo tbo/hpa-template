@@ -2,20 +2,23 @@ const path = require('path');
 const { readdirSync } = require('fs');
 
 const WEB_COMPONENTS = 'src/web-components/';
-const entry = Object.fromEntries(
-  readdirSync(WEB_COMPONENTS).map(filename => [
-    filename.split('.')[0],
-    path.resolve(__dirname, WEB_COMPONENTS + filename),
-  ]),
-);
-entry.client = './src/client.ts';
+const getEntries = () => {
+  const entries = Object.fromEntries(
+    readdirSync(WEB_COMPONENTS).map(filename => [
+      filename.split('.')[0],
+      path.resolve(__dirname, WEB_COMPONENTS + filename),
+    ]),
+  );
+  entries.client = './src/client.ts';
+  return entries;
+};
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   devtool: 'source-map',
-  entry,
+  entry: getEntries,
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'build/'),

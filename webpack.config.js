@@ -3,16 +3,16 @@ const { readdirSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
-const WEB_COMPONENTS = 'src/web-components/';
+const ENTRY_FOLDER = 'src/client/components/';
 const getEntries = () => {
   const entries = Object.fromEntries(
-    readdirSync(WEB_COMPONENTS).map(filename => [
+    readdirSync(ENTRY_FOLDER).map(filename => [
       filename.split('.')[0],
-      path.resolve(__dirname, WEB_COMPONENTS + filename),
+      path.resolve(__dirname, ENTRY_FOLDER + filename),
     ]),
   );
-  entries.client = './src/client.ts';
-  entries.styles = ['./src/pages/shared/styles.css'];
+  entries.client = './src/client/index.ts';
+  entries.styles = ['./src/server/pages/shared/styles.css'];
   return entries;
 };
 

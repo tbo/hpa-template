@@ -1,5 +1,7 @@
 const path = require('path');
 const { readdirSync } = require('fs');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
 const WEB_COMPONENTS = 'src/web-components/';
 const getEntries = () => {
@@ -10,6 +12,7 @@ const getEntries = () => {
     ]),
   );
   entries.client = './src/client.ts';
+  entries.styles = ['./src/pages/shared/styles.css'];
   return entries;
 };
 
@@ -20,15 +23,21 @@ module.exports = {
   devtool: 'source-map',
   entry: getEntries,
   output: {
-    filename: '[name].js',
+    filename: '[contenthash]-[name].js',
     path: path.resolve(__dirname, 'build/'),
   },
+  plugins: [new FixStyleOnlyEntriesPlugin(), new MiniCssExtractPlugin({ filename: '[contenthash]-[name].css' })],
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /(node_modules|bower_components)/,
         use: { loader: 'ts-loader' },
+      },
+      {
+        test: /\.css$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },

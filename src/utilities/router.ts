@@ -6,9 +6,6 @@ import fastifyStatic from 'fastify-static';
 import path from 'path';
 import { asyncLocalStorage } from './context';
 import { renderToString, Template } from './template';
-import callsite from 'callsite';
-import { createHash } from 'crypto';
-import { readFileSync } from 'fs';
 
 const app = fastify({ logger: true });
 
@@ -17,7 +14,8 @@ app
   .register(cookie)
   .register(multipart, { addToBody: true })
   .register(fastifyStatic, {
-    root: path.join(__dirname, '../../public'),
+    prefix: '/assets/',
+    root: path.join(__dirname, '../../build'),
   })
   .listen(3000);
 
@@ -49,38 +47,4 @@ interface EndpointOptions extends Omit<RouteOptions, 'method'> {
 export const addEndpoint = (options: EndpointOptions) => {
   app.route({ method: 'GET', ...options });
   return getLink(options.url);
-};
-
-const filenameToUrl = {};
-const urlToFile = {};
-
-app.route({
-  method: 'GET',
-  url: '/assets/*',
-  handler: (request, reply) => {
-    const path = urlToFile[request.params['*']];
-    if (path) {
-      reply.sendFile(path, '/');
-    } else {
-      reply.status(404).send();
-    }
-  },
-});
-
-export const addAsset = (filename: string) => {
-  if (filenameToUrl[filename]) {
-    return filenameToUrl[filename];
-  }
-  const originFolder = path.dirname(callsite()[1].getFileName());
-  const absoluteFilepath = path.join(originFolder, filename);
-  const fileData = readFileSync(absoluteFilepath, 'utf8');
-  const hash = createHash('sha1').update(fileData, 'utf8').digest('hex');
-  const assetPath = `${hash}/${path.basename(filename)}`;
-  const url = `/assets/${assetPath}`;
-  urlToFile[assetPath] = absoluteFilepath;
-  filenameToUrl[filename] = url;
-  if (path.extname(filename) === '.js') {
-    urlToFile[assetPath + '.map'] = absoluteFilepath + '.map';
-  }
-  return url;
 };

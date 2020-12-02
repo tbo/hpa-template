@@ -1,10 +1,10 @@
 import { html, Child } from '../../utilities/template';
 import Header from './header';
 import Footer from './footer';
-import { addAsset } from '../../utilities/router';
+import getAssetUrl from '../../utilities/get-asset-url';
 
-const clientUrl = addAsset('../../../build/client.js');
-const stylesUrl = addAsset('./styles.css');
+const clientUrl = getAssetUrl('client.js');
+const stylesUrl = getAssetUrl('styles.css');
 
 const Base = (props: { title: string }, ...children: Child[]) => html`
   <!DOCTYPE html>

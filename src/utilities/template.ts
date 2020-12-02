@@ -1,4 +1,4 @@
-import { addAsset } from './router';
+import getAssetUrl from './get-asset-url';
 
 const repeatedWhitespace = /\s{2,}/g;
 const whitespace = /\r\n|\n|\r|(\s{1,}(?=<))/g;
@@ -64,7 +64,7 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
   return result;
 };
 
-const getWebComponentScript = (name: string) => `<script src="${addAsset(`../../build/${name}.js`)}"></script>`;
+const getWebComponentScript = (name: string) => `<script src="${getAssetUrl(`${name}.js`)}"></script>`;
 
 const resolve = async (component: Template | Promise<Template>, webComponents: string[]) => {
   const list = await component;

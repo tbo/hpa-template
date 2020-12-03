@@ -7,8 +7,10 @@ const HomePage = () =>
     { title: 'Homepage' },
     html`<div>
       <h1>Hello World</h1>
-      <hpa-counter />
+      <hpa-counter></hpa-counter>
+      <br />
       <button is="hpa-increment">+</button>
+      <button is="hpa-decrement">-</button>
     </div>`,
   );
 

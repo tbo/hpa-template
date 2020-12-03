@@ -2,13 +2,16 @@ import { autorun } from 'mobx';
 import store from '../store';
 
 class Counter extends HTMLElement {
+  private root: ShadowRoot;
+
   constructor() {
     super();
-    autorun(this.update);
+    this.root = this.attachShadow({ mode: 'open' });
+    autorun(() => this.update());
   }
 
   update() {
-    console.log('ID:', store.id, 'Counter:', store.counter);
+    this.root.innerHTML = `Count: ${store.count}`;
   }
 }
 

@@ -15,7 +15,7 @@ app
   .register(multipart, { addToBody: true })
   .register(fastifyStatic, {
     prefix: '/assets/',
-    root: path.join(__dirname, '../../build'),
+    root: path.join(__dirname, '../../../build'),
   })
   .listen(3000);
 

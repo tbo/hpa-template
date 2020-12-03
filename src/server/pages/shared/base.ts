@@ -3,7 +3,7 @@ import Header from './header';
 import Footer from './footer';
 import getAssetUrl from '../../utilities/get-asset-url';
 
-const clientUrl = getAssetUrl('client.js');
+const coreUrl = getAssetUrl('core.js');
 const stylesUrl = getAssetUrl('styles.css');
 
 const Base = (props: { title: string }, ...children: Child[]) => html`
@@ -15,13 +15,13 @@ const Base = (props: { title: string }, ...children: Child[]) => html`
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="${stylesUrl}" rel="stylesheet" />
     </head>
-    <body is="hpa-store">
+    <body>
       ${Header()}
       <main>
         ${children}
       </main>
       ${Footer()}
-      <script src="${clientUrl}"></script>
+      <script src="${coreUrl}"></script>
     </body>
   </html>
 `;

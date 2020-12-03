@@ -3,7 +3,7 @@ import path from 'path';
 
 const assets = Object.fromEntries(
   readdirSync(path.resolve(__dirname, '../../../build')).map(filename => [
-    filename.split(/-(.+)/)[1],
+    process.env.NODE_ENV === 'production' ? filename.split(/-(.+)/)[1] : filename,
     `/assets/${filename}`,
   ]),
 );

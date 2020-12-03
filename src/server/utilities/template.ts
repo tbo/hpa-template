@@ -39,7 +39,7 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
   let [raw, webComponents] = cache.get(literalSections) || [];
   if (!raw) {
     raw = literalSections.raw.map((item: string) => item.replace(whitespace, '').replace(repeatedWhitespace, ' '));
-    webComponents = Array.from(raw.join().matchAll(WEB_COMPONENT_PATTERN)).map((hit: any) => hit[1]);
+    webComponents = new Set(Array.from(raw.join().matchAll(WEB_COMPONENT_PATTERN)).map((hit: any) => hit[1]));
     cache.set(literalSections, [raw, webComponents]);
   }
   const result = new Template(webComponents);
@@ -48,7 +48,7 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
     result.push(raw[i]);
     if (subst instanceof Template) {
       result.push(...subst.flat());
-      result.webComponents.push(...subst.webComponents);
+      result.webComponents = [...result.webComponents, ...subst.webComponents];
     } else if (Array.isArray(subst)) {
       result.push(...subst.flatMap(htmlEscape));
       subst.forEach(item => {

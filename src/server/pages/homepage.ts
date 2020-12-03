@@ -7,7 +7,8 @@ const HomePage = () =>
     { title: 'Homepage' },
     html`<div>
       <h1>Hello World</h1>
-      <hpa-clock />
+      <hpa-counter />
+      <button is="hpa-increment">+</button>
     </div>`,
   );
 

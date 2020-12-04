@@ -1,7 +1,6 @@
 const path = require('path');
 const { readdirSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const ENTRY_FOLDER = 'src/client/components/';
@@ -32,6 +31,7 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
+      minSize: 100,
       chunks: 'all',
       name: 'core',
     },
@@ -39,11 +39,7 @@ module.exports = {
       name: 'core',
     },
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new FixStyleOnlyEntriesPlugin(),
-    new MiniCssExtractPlugin({ filename: basename + '.css' }),
-  ],
+  plugins: [new CleanWebpackPlugin(), new MiniCssExtractPlugin({ filename: basename + '.css' })],
   module: {
     rules: [
       {

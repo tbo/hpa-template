@@ -66,7 +66,7 @@ export const html = (literalSections: TemplateStringsArray, ...substs: TemplateE
 
 const getWebComponentScript = (name: string) => `<script src="${getAssetUrl(`${name}.js`)}"></script>`;
 
-const resolve = async (component: Template | Promise<Template>, webComponents: string[]) => {
+export const resolve = async (component: Template | Promise<Template>, webComponents: string[]) => {
   const list = await component;
   if (list.webComponents) {
     webComponents.push(...list.webComponents);

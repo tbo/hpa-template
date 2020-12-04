@@ -1,3 +1,5 @@
+import cache from '../../utilities/cache';
+import { getRequest } from '../../utilities/context';
 import { html } from '../../utilities/template';
 import getCategoryLink from '../category';
 
@@ -13,4 +15,7 @@ const Header = () => html`
   </header>
 `;
 
-export default Header;
+// Use request url as cache key
+const cacheKey = () => getRequest().url;
+
+export default cache(Header, { cacheKey, stdTTL: 600 });

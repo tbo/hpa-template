@@ -1,3 +1,4 @@
+import cache from '../../utilities/cache';
 import { html } from '../../utilities/template';
 
 const Footer = () => html`
@@ -7,4 +8,5 @@ const Footer = () => html`
   </footer>
 `;
 
-export default Footer;
+// Cache forever
+export default cache(Footer);

@@ -56,6 +56,12 @@ const transformDom = (mode: 'cache' | 'network') => (text: string) => {
   morphdom(document.documentElement, newDom.documentElement, {
     onBeforeElUpdated: mode === 'network' ? shouldUpdateFromNetwork : shouldUpdateFromCache,
   });
+  // Embedded JavaScript needs to be evaluated explicitly
+  document.querySelectorAll('script').forEach(({ innerHTML: innerText }) => {
+    if (innerText) {
+      eval(innerText);
+    }
+  });
   window.document.dispatchEvent(
     new Event('DOMContentLoaded', {
       bubbles: true,

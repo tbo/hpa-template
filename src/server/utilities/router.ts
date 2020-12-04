@@ -32,9 +32,11 @@ const getLink = (url: string) => (params?: Record<string, string | number>) => {
 };
 
 export const addPage = (options: PageOptions) => {
-  const handler: RouteHandlerMethod = (request, reply) => {
+  const handler: RouteHandlerMethod = async (request, reply) => {
     reply.header('content-type', 'text/html');
-    asyncLocalStorage.run({ request, reply }, async () => reply.send(await renderToString(options.handler())));
+    await asyncLocalStorage.run({ request, reply }, async () => {
+      reply.send(await renderToString(options.handler()));
+    });
   };
   app.route({ method: 'GET', ...options, handler });
   return getLink(options.url);

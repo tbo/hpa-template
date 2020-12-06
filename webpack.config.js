@@ -2,6 +2,7 @@ const path = require('path');
 const { readdirSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 
 const ENTRY_FOLDER = 'src/client/components/';
 const getEntries = () => {
@@ -16,6 +17,7 @@ const getEntries = () => {
 };
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 const basename = `${isProduction ? '[contenthash]-' : ''}[name]`;
 
 module.exports = {
@@ -39,18 +41,25 @@ module.exports = {
       name: 'core',
     },
   },
-  plugins: [new CleanWebpackPlugin(), new MiniCssExtractPlugin({ filename: basename + '.css' })],
+  plugins: [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({ filename: basename + '.css' }),
+    new DefinePlugin({
+      __IS_DEVELOPMENT__: JSON.stringify(isDevelopment),
+    }),
+  ],
+
   module: {
     rules: [
       {
         test: /\.(t|j)s$/,
-        exclude: /(node_modules|bower_components)/,
+        include: [path.resolve(__dirname, 'src/client')],
         use: { loader: 'ts-loader' },
       },
       {
-        test: /\.css$/,
-        exclude: /(node_modules|bower_components)/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.scss$/,
+        include: [path.resolve(__dirname, 'src/client')],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },

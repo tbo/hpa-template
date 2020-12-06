@@ -57,7 +57,7 @@ const transformDom = (mode: 'cache' | 'network') => (text: string) => {
     onBeforeElUpdated: mode === 'network' ? shouldUpdateFromNetwork : shouldUpdateFromCache,
   });
   // Embedded JavaScript needs to be evaluated explicitly
-  document.querySelectorAll('script').forEach(({ innerHTML: innerText }) => {
+  document.querySelectorAll('script').forEach(({ innerText }) => {
     if (innerText) {
       eval(innerText);
     }

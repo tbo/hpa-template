@@ -4,13 +4,26 @@ import fastifyErrorPage from 'fastify-error-page';
 import multipart from 'fastify-multipart';
 import fastifyStatic from 'fastify-static';
 import path from 'path';
+import { isDevelopment } from '..';
 import { asyncLocalStorage } from './context';
 import { renderToString, Template } from './template';
 
 const app = fastify({ logger: true });
 
+if (isDevelopment) {
+  app.register(fastifyErrorPage).addHook('onSend', (_request, reply, payload, done) => {
+    if (typeof payload === 'string' && reply.getHeader('Content-Type') === 'text/html') {
+      done(
+        null,
+        payload.replace('</body>', '<script src="http://localhost:35729/livereload.js?snipver=1"></script></body>'),
+      );
+    } else {
+      done(null, payload);
+    }
+  });
+}
+
 app
-  .register(fastifyErrorPage)
   .register(cookie)
   .register(multipart, { addToBody: true })
   .register(fastifyStatic, {

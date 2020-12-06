@@ -1,6 +1,6 @@
 import { html } from '../utilities/template';
 import { addPage } from '../utilities/router';
-import Base from './shared/base';
+import Base from '../components/base';
 
 const HomePage = () =>
   Base(

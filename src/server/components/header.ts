@@ -1,7 +1,7 @@
-import cache from '../../utilities/cache';
-import { getRequest } from '../../utilities/context';
-import { html } from '../../utilities/template';
-import getCategoryLink from '../category';
+import cache from '../utilities/cache';
+import { getRequest } from '../utilities/context';
+import { html } from '../utilities/template';
+import getCategoryLink from '../pages/category';
 
 const Header = () => html`
   <header>

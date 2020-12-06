@@ -1,5 +1,5 @@
-import cache from '../../utilities/cache';
-import { html } from '../../utilities/template';
+import cache from '../utilities/cache';
+import { html } from '../utilities/template';
 
 const Footer = () => html`
   <footer>

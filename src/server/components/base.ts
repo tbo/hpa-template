@@ -1,7 +1,7 @@
-import { html, Child } from '../../utilities/template';
+import { html, Child } from '../utilities/template';
 import Header from './header';
 import Footer from './footer';
-import getAssetUrl from '../../utilities/get-asset-url';
+import getAssetUrl from '../utilities/get-asset-url';
 
 const coreUrl = getAssetUrl('core.js');
 const stylesUrl = getAssetUrl('styles.css');

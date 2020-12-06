@@ -11,7 +11,7 @@ const getEntries = () => {
       path.resolve(__dirname, ENTRY_FOLDER + filename),
     ]),
   );
-  entries.styles = ['./src/server/pages/shared/styles.css'];
+  entries.styles = ['./src/client/styles.scss'];
   return entries;
 };
 

@@ -5,7 +5,7 @@
   "scripts": {
     "dev-server": "TSC_WATCHFILE=UseFsEvents ts-node-dev --no-notify --transpile-only -- src/server",
     "dev-client": "webpack -w",
-    "dev": "webpack && concurrently npm:dev-*",
+    "dev": "concurrently npm:dev-*",
     "build": "NODE_ENV=production webpack",
     "start": "NODE_ENV=production ts-node src/server",
     "test": "echo \"Error: no test specified\" && exit 1"

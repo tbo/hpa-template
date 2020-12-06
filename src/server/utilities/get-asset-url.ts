@@ -8,4 +8,4 @@ const assets = Object.fromEntries(
   ]),
 );
 
-export default (name: string) => assets[name];
+export default (name: string) => (process.env.NODE_ENV === 'production' ? assets[name] : `/assets/${name}`);
